@@ -1,0 +1,52 @@
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "CurrencyOS — Live Currency Converter & Gateway Fee Calculator",
+  description: "Convert all world currencies with live market rates, view historical price charts, and calculate exact transaction fees for PayPal, Stripe, Wise, and Crypto (USDT).",
+  keywords: ["currency converter", "live exchange rates", "paypal fee calculator", "stripe fee calculator", "wise comparison", "usdt to usd", "forex chart"],
+  authors: [{ name: "CurrencyOS Team" }],
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
+  openGraph: {
+    title: "CurrencyOS — Smart Live Currency & Fee Calculator",
+    description: "Real-time world exchange rates, interactive currency charts, and merchant fee calculators.",
+    url: "https://currency-os.com",
+    siteName: "CurrencyOS",
+    type: "website",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CurrencyOS",
+    "url": "https://currency-os.com",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "description": "Real-time global currency converter and payment gateway fee calculator.",
+  };
+
+  return (
+    <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className={inter.className}>{children}</body>
+    </html>
+  );
+}
