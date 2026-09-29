@@ -14,14 +14,17 @@ export const metadata: Metadata = {
     shortcut: "/icon.png",
     apple: "/icon.png",
   },
-  openGraph: {
-    title: "CurrencyOS — Smart Live Currency & Fee Calculator",
-    description: "Real-time world exchange rates, interactive currency charts, and merchant fee calculators.",
-    url: "https://currency-os.com",
-    siteName: "CurrencyOS",
-    type: "website",
-  },
-};
+openGraph: {
+      title: "CurrencyOS - Smart Live Currency & Fee Calculator",
+      description: "Real-time world exchange rates, interactive currency charts, and merchant fee calculators.",
+      url: "https://currency-os.com",
+      siteName: "CurrencyOS",
+      type: "website",
+    },
+    verification: {
+      google: "4w-KvABhhHAm9QlUf6GLIj2GXytX-bwWIbzrI1rCc0s",
+    },
+  };
 
 export default function RootLayout({
   children,
