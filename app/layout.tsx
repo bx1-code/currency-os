@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "CurrencyOS — Live Currency Converter & Gateway Fee Calculator",
@@ -51,6 +51,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6277200436544718"
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
       </head>
       <body className={inter.className}>{children}</body>
     </html>
