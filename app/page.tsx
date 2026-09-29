@@ -639,14 +639,15 @@ export default function CurrencyOS() {
           {/* Compliance & Trust */}
           <div>
             <h3 className="font-semibold text-white mb-3 text-sm">Legal & Security</h3>
-            <ul className="space-y-2 text-zinc-400">
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">API Data Sources</a></li>
-              <li className="flex items-center gap-1 text-emerald-400 pt-1">
-                <ShieldCheck className="w-3.5 h-3.5" /> 256-bit Encrypted Feed
-              </li>
-            </ul>
+           <ul className="space-y-2 text-zinc-400">
+            <li><a href="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+            <li><a href="/about" className="hover:text-blue-400 transition-colors">About Us</a></li>
+            <li><a href="/contact" className="hover:text-blue-400 transition-colors">Contact Us</a></li>
+            <li className="flex items-center gap-1 text-emerald-400 pt-1">
+              <ShieldCheck className="w-3.5 h-3.5" /> 256-bit Encrypted Feed
+            </li>
+          </ul>
           </div>
 
         </div>
