@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import GlobeSection from './components/GlobeSection';
 import { ArrowUpDown, ShieldCheck, ExternalLink, Sparkles, RefreshCw, CreditCard, Wallet, Coins, TrendingUp, Globe } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface CurrencyMap {
   [key: string]: number;
@@ -141,6 +142,9 @@ const formatNumber = (num: number, decimals: number = 2): string => {
 
 export default function CurrencyOS() {
   const [mounted, setMounted] = useState<boolean>(false);
+  const [showSplash, setShowSplash] = useState<boolean>(true);
+  const [splashPairIndex, setSplashPairIndex] = useState<number>(0);
+
   const [lang, setLang] = useState<Language>('en');
   const t = TRANSLATIONS[lang];
 
@@ -158,8 +162,35 @@ export default function CurrencyOS() {
   const [activeTab, setActiveTab] = useState<'paypal' | 'stripe' | 'crypto'>('paypal');
   const [inputValue, setInputValue] = useState<number>(100);
 
+  // أسعار العملات لشاشة الدخلة المباشرة
+  const splashPairs = [
+    { pair: "1 USD = 9.95 MAD", flag: "🇲🇦" },
+    { pair: "1 EUR = 1.08 USD", flag: "🇪🇺" },
+    { pair: "1 GBP = 1.29 USD", flag: "🇬🇧" },
+    { pair: "1 BTC = $65,420", flag: "🪙" },
+  ];
+
   useEffect(() => {
     setMounted(true);
+
+    // تغيير العملات السريع
+    const interval = setInterval(() => {
+      setSplashPairIndex((prev) => {
+        if (prev < splashPairs.length - 1) return prev + 1;
+        clearInterval(interval);
+        return prev;
+      });
+    }, 280);
+
+    // إخفاء شاشة الترحيب بعد 1.3 ثانية
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 1300);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
   }, []);
 
   // 1. جلب أسعار جميع العملات المباشرة
@@ -187,7 +218,6 @@ export default function CurrencyOS() {
   useEffect(() => {
     const fetchCrypto = async () => {
       try {
-        // المحاولة الأولى: عبر Binance API المباشر والسريع جداً
         const binanceRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').catch(() => null);
         if (binanceRes && binanceRes.ok) {
           const binanceData = await binanceRes.json();
@@ -197,7 +227,6 @@ export default function CurrencyOS() {
           }
         }
 
-        // المحاولة الثانية: عبر CoinGecko API كخيار بديل
         const cgRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd').catch(() => null);
         if (cgRes && cgRes.ok) {
           const cgData = await cgRes.json();
@@ -290,8 +319,55 @@ export default function CurrencyOS() {
   const cryptoNet = Math.max(0, inputValue - cryptoFee);
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans pb-12 selection:bg-blue-500" dir={t.dir}>
+    <div className="min-h-screen bg-black text-white font-sans pb-12 selection:bg-blue-500 relative overflow-x-hidden" dir={t.dir}>
       
+      {/* 🌟 أنيميشن شاشة الترحيب بأسعار العملات السريعة (Live Rates Splash) */}
+      <AnimatePresence>
+        {showSplash && (
+          <motion.div
+            key="splash"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.04, transition: { duration: 0.45, ease: 'easeInOut' } }}
+            className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center select-none"
+          >
+            <div className="flex flex-col items-center gap-6">
+              
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-xl shadow-blue-500/30"
+              >
+                <Coins className="w-8 h-8 text-white" />
+              </motion.div>
+
+              <div className="h-12 flex items-center justify-center overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={splashPairIndex}
+                    initial={{ y: 20, opacity: 0, filter: 'blur(4px)' }}
+                    animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ y: -20, opacity: 0, filter: 'blur(4px)' }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-3 bg-zinc-900/90 border border-white/10 px-5 py-2 rounded-full shadow-lg"
+                  >
+                    <span className="text-xl">{splashPairs[splashPairIndex].flag}</span>
+                    <span className="text-sm font-bold text-white tracking-wide">
+                      {splashPairs[splashPairIndex].pair}
+                    </span>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <span className="text-xs font-semibold text-zinc-500 tracking-widest uppercase">
+                Currency<span className="text-blue-500">OS</span> Live Engine
+              </span>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* 1. Live Ticker Header */}
       <div className="w-full bg-zinc-900/80 backdrop-blur-md border-b border-white/10 py-2.5 px-4 overflow-x-auto whitespace-nowrap text-xs text-zinc-400 flex items-center justify-between">
         <div className="flex items-center space-x-6 rtl:space-x-reverse">
@@ -604,7 +680,7 @@ export default function CurrencyOS() {
 
       {/* 7. Footer Section */}
       <footer className="mt-16 border-t border-white/10 pt-10 pb-8 text-xs text-zinc-400">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 max-w-4xl mx-auto px-4">
           
           {/* Brand Column */}
           <div className="space-y-3">
@@ -658,7 +734,7 @@ export default function CurrencyOS() {
         </div>
 
         {/* Copyright Bottom Bar */}
-        <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row justify-between items-center text-zinc-500 text-[11px] gap-3">
+        <div className="border-t border-white/5 pt-6 max-w-4xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-zinc-500 text-[11px] gap-3">
           <p>© {new Date().getFullYear()} CurrencyOS. All rights reserved.</p>
           <p className="text-zinc-600">Designed for commercial performance & accuracy.</p>
         </div>
