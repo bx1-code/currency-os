@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import CurrencyHeatmap from './components/CurrencyHeatmap';
 import GlobeSection from './components/GlobeSection';
 import { ArrowUpDown, ShieldCheck, ExternalLink, Sparkles, RefreshCw, CreditCard, Wallet, Coins, TrendingUp, Globe } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -672,7 +673,8 @@ export default function CurrencyOS() {
             </div>
           </div>
         </div>
-
+        {/* 6. Currency Heatmap Section */}
+        <CurrencyHeatmap />
         {/* 6. Globe Interactive Section */}
         <GlobeSection />
 
