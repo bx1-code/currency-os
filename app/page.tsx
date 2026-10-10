@@ -303,7 +303,7 @@ export default function CurrencyOS() {
   const allCurrencyCodes = Object.keys(rates);
 
   const providers = [
-    { name: 'Wise', fee: 4.10, rateMarkup: 1.0, isBest: true, link: 'https://wise.com' },
+    { name: 'Wise', fee: 4.10, rateMarkup: 1.0, isBest: true, link: 'https://wise.prf.hn/click/camref:1101l6usLm' },
     { name: 'Revolut', fee: 0.00, rateMarkup: 0.998, isBest: false, link: 'https://revolut.com' },
     { name: 'Western Union', fee: 12.50, rateMarkup: 0.975, isBest: false, link: 'https://westernunion.com' },
     { name: 'Bank Transfer', fee: 25.00, rateMarkup: 0.960, isBest: false, link: '#bank' },
